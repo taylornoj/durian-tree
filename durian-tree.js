@@ -52,8 +52,7 @@ class Employee {
   get totalEmployees() {
     let totalEmployees = 1; 
     for (const subordinate of this.subordinates) {
-      totalEmployees++;
-      totalEmployees += subordinate.totalEmployees -1;
+      totalEmployees += subordinate.totalEmployees;
     }
     return totalEmployees;
   }
