@@ -30,8 +30,36 @@ class Employee {
 
     return numberOfPeople;
   }
+  // true if two employees share the same boss and false otherwise
   hasSameBoss(employee) {
     return this.boss === employee.boss;
+  }
+
+  employeesThatMakeOver(amount) {
+
+    let employees = []; // 1 - create new employees array to hold every employee that makes over the specified amount
+
+    if (this.salary > amount) {
+      employees.push(this); // 2 - if current employee makes over that amount, add them to the array
+    }
+
+    for (const subordinate of this.subordinates) {
+      const subordinatesThatMakeOver = subordinate.employeesThatMakeOver(amount); // 3 - call this method on all of the current employees subordinates and combine their results with the current results
+      employees = employees.concat(subordinatesThatMakeOver);
+    }
+
+    return employees;
+  }
+
+  get totalEmployees() {
+
+    let totalEmployees = 1; 
+
+    for (const subordinate of this.subordinates) {
+      totalEmployees++;
+      totalEmployees += subordinate.totalEmployees -1;
+    }
+    return totalEmployees;
   }
 };
 
@@ -47,7 +75,6 @@ const phil     = new Employee("Phil", "VP Marketing", 1000000);
 const florida  = new Employee("Florida");
 const david    = new Employee("David")
 const brian    = new Employee("Brian");
-
 
 //nodes
 ada.addSubordinate(craig);
@@ -69,3 +96,11 @@ console.log(craig.numberOfSubordinates);
 
 // how many people are in between Craig and the CEO?
 console.log(craig.numberOfPeopleToCEO);
+
+// traverse through entire company (including Ada) to list whoever makes over $418401/year
+let wealthyEmployees = ada.employeesThatMakeOver(418401);
+console.log(wealthyEmployees)
+
+// total number of employees under a certain employee
+console.log(ada.totalEmployees)
+console.log(craig.totalEmployees)
