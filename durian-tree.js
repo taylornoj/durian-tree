@@ -38,23 +38,19 @@ class Employee {
   employeesThatMakeOver(amount) {
 
     let employees = []; // 1 - create new employees array to hold every employee that makes over the specified amount
-
     if (this.salary > amount) {
       employees.push(this); // 2 - if current employee makes over that amount, add them to the array
     }
-
     for (const subordinate of this.subordinates) {
       const subordinatesThatMakeOver = subordinate.employeesThatMakeOver(amount); // 3 - call this method on all of the current employees subordinates and combine their results with the current results
       employees = employees.concat(subordinatesThatMakeOver);
     }
-
     return employees;
   }
 
+  
   get totalEmployees() {
-
     let totalEmployees = 1; 
-
     for (const subordinate of this.subordinates) {
       totalEmployees++;
       totalEmployees += subordinate.totalEmployees -1;
